@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<table class="table">
+    <thead>
+    <tr>
+        <th>{% translate 'ID' %}</th>
+        <th>{% translate 'Username' %}</th>
+        <th>{% translate 'Full name' %}</th>
+        <th>{% translate 'Created date' %}</th>
+        <th>{% translate 'Manage' %}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in user_list %}
+    <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.get_full_name }}</td>
+        <td>{{ user.date_joined }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
