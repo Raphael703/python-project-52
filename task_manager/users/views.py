@@ -11,3 +11,7 @@ class UserCreateView(CreateView):
     template_name = 'users/create.html'
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('user_login')
+class UserDeleteView(DeleteView):
+    model = get_user_model()
+    template_name = 'users/delete.html'
+    success_url = reverse_lazy('user_list')
