@@ -4,6 +4,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+import dj_database_url
 
 load_dotenv()
 
@@ -58,10 +59,13 @@ WSGI_APPLICATION = 'task_manager.wsgi.application'
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.getenv(
+            'DATABASE_URL',
+            'postgresql://pguser:pgpass@localhost:5432/pgdb'
+        ),
+        conn_max_age=600
+    )
 }
 
 
