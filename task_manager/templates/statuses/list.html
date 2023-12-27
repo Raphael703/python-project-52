@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block content %}
+<a class="btn btn-primary" href="{% url 'status_create' %}">{% translate 'Create status' %}</a>
 <table class="table">
     <thead>
     <tr>
@@ -16,12 +17,12 @@
     <tr>
         <th scope="row">{{ status.id }}</th>
         <td>{{ status.name }}</td>
-        <td>{{ user.created_at }}</td>
-<!--        <td>-->
-<!--          <a href="{% url 'user_update' user.id %}">{% translate 'Update' %}</a>-->
-<!--          <br>-->
+        <td>{{ status.created_at }}</td>
+        <td>
+          <a href="{% url 'status_update' status.id %}">{% translate 'Update' %}</a>
+          <br>
 <!--          <a href="{% url 'user_delete' user.id %}">{% translate 'Delete' %}</a>-->
-<!--        </td>-->
+        </td>
     </tr>
     {% endfor %}
     </tbody>
