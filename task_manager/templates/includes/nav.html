@@ -9,8 +9,14 @@
                         {% translate 'Users' %}
                     </a>
                 </li>
+                {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <input class="btn nav-link" type="submit" value="{% translate 'Logout' %}">
+                </form>
+                {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user_login' %}">
+                    <a class="nav-link" href="{% url 'login' %}">
                         {% translate 'Login' %}
                     </a>
                 </li>
@@ -19,6 +25,7 @@
                         {% translate 'Registration' %}
                     </a>
                 </li>
+                {% endif %}
             </ul>
         </div>
     </div>
