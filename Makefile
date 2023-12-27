@@ -15,8 +15,13 @@ makemessages:
 compilemessages:
 	poetry run ./manage.py compilemessages
 
+migrate:
+	poetry run ./manage.py migrate
+
 shell:
 	poetry run ./manage.py shell
 
 start:
 	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) task_manager.wsgi:application
+
+prod: migrate compilemessages start
