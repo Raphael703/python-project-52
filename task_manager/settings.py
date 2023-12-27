@@ -1,11 +1,9 @@
 import os
-
 from pathlib import Path
 
+import dj_database_url
 from django.urls import reverse_lazy
 from dotenv import load_dotenv
-
-import dj_database_url
 
 load_dotenv()
 
@@ -22,7 +20,6 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'webserver']
 RENDER_EXTERNAL_HOSTNAME = os.getenv('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -66,7 +63,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'task_manager.wsgi.application'
 
-
 DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv(
@@ -76,7 +72,6 @@ DATABASES = {
         conn_max_age=600
     )
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -93,7 +88,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = 'en-us'
 
 LOCALE_PATHS = [
@@ -106,11 +100,10 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = reverse_lazy('login')
-LOGIN_REDIRECT_URL = reverse_lazy('root')
-LOGOUT_REDIRECT_URL = reverse_lazy('root')
+LOGIN_REDIRECT_URL = reverse_lazy('index')
+LOGOUT_REDIRECT_URL = reverse_lazy('index')
