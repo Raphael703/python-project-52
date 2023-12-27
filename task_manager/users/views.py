@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
 from django.views.generic import ListView, DeleteView, CreateView, UpdateView
@@ -37,14 +39,18 @@ class UserCreateView(CreateView):
     success_url = reverse_lazy('login')
 
 
-class UserUpdateView(UpdateView):
+class UserUpdateView(LoginRequiredAndUserPassesTestMixin, SuccessMessageMixin,
+                     UpdateView):
     model = get_user_model()
     form_class = CustomUserCreationForm
     template_name = 'users/update.html'
     success_url = reverse_lazy('user_list')
+    success_message = _('User successfully updated')
 
 
-class UserDeleteView(DeleteView):
+class UserDeleteView(LoginRequiredAndUserPassesTestMixin, SuccessMessageMixin,
+                     DeleteView):
     model = get_user_model()
     template_name = 'users/delete.html'
     success_url = reverse_lazy('user_list')
+    success_message = _('User successfully deleted')
