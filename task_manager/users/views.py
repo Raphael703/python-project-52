@@ -1,8 +1,28 @@
+from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.utils.translation import gettext as _
 from django.views.generic import ListView, DeleteView, CreateView, UpdateView
 
 from task_manager.users.forms import CustomUserCreationForm
+
+
+class LoginRequiredAndUserPassesTestMixin(LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.pk == self.kwargs['pk']
+
+    def handle_no_permission(self):
+        if not self.request.user.is_authenticated:
+            messages.error(
+                self.request,
+                _('You are not logged in! Please sign in.'))
+            return redirect('login')
+        else:
+            messages.error(
+                self.request,
+                _('You do not have permission to modify another user.'))
+            return redirect('user_list')
 
 
 class UserListView(ListView):
