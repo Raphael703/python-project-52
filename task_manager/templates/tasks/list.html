@@ -19,7 +19,9 @@
     {% for task in tasks %}
     <tr>
         <th scope="row">{{ task.id }}</th>
-        <td>{{ task.name }}</td>
+        <td>
+            <a href="{% url 'task_detail' task.id %}">{{ task.name }}</a>
+        </td>
         <td>{{ task.status }}</td>
         <td>{{ task.creator }}</td>
         {% if task.executor %}
