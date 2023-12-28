@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<table class="table">
+    <thead>
+    <tr>
+        <th>{% translate 'ID' %}</th>
+        <th>{% translate 'Name' %}</th>
+        <th>{% translate 'Status' %}</th>
+        <th>{% translate 'Author' %}</th>
+        <th>{% translate 'Executor' %}</th>
+        <th>{% translate 'Created date' %}</th>
+        <th>{% translate 'Manage' %}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for task in tasks %}
+    <tr>
+        <th scope="row">{{ task.id }}</th>
+        <td>{{ task.name }}</td>
+        <td>{{ task.status }}</td>
+        <td>{{ task.creator }}</td>
+        <td>{{ task.executor }}</td>
+        <td>{{ task.created_at }}</td>
+<!--        <td>-->
+<!--          <a href="{% url 'user_update' user.id %}">{% translate 'Update' %}</a>-->
+<!--          <br>-->
+<!--          <a href="{% url 'user_delete' user.id %}">{% translate 'Delete' %}</a>-->
+<!--        </td>-->
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
