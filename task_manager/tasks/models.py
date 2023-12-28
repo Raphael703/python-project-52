@@ -15,16 +15,16 @@ class Task(models.Model):
         related_name='task',
         verbose_name=_('status'),
     )
-    creator = models.OneToOneField(
+    creator = models.ForeignKey(
         get_user_model(),
         on_delete=models.PROTECT,
-        related_name='creator',
+        related_name='created_tasks',
         verbose_name=_('creator'),
     )
-    executor = models.OneToOneField(
+    executor = models.ForeignKey(
         get_user_model(),
         on_delete=models.PROTECT,
-        related_name='executor',
+        related_name='assigned_tasks',
         blank=True,
         null=True,
         verbose_name=_('executor'),
