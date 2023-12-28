@@ -1,7 +1,8 @@
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, \
+    DeleteView, DetailView
 
 from task_manager.mixins import CustomLoginRequiredMixin
 from task_manager.tasks.models import Task
@@ -11,6 +12,11 @@ class TaskListView(CustomLoginRequiredMixin, ListView):
     model = Task
     template_name = 'tasks/list.html'
     context_object_name = 'tasks'
+
+
+class TaskDetailView(CustomLoginRequiredMixin, DetailView):
+    model = Task
+    template_name = 'tasks/detail.html'
 
 
 class TaskCreateView(CustomLoginRequiredMixin, SuccessMessageMixin, CreateView):
