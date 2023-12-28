@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -21,12 +20,10 @@ msgstr ""
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: task_manager/statuses/models.py:7 task_manager/tasks/models.py:10
-#, fuzzy
 msgid "name"
 msgstr "Имя"
 
 #: task_manager/statuses/models.py:9 task_manager/tasks/models.py:33
-#, fuzzy
 msgid "created datetime"
 msgstr "Дата и время создания"
 
@@ -54,8 +51,9 @@ msgid "The status has been successfully deleted"
 msgstr "Статус успешно удален"
 
 #: task_manager/tasks/models.py:11
-#, fuzzy
-#| msgid "Registration"
+msgid "Registration"
+msgstr "Регистрация"
+
 msgid "description"
 msgstr "Описание"
 
@@ -121,11 +119,6 @@ msgstr "Выход"
 msgid "Login"
 msgstr "Вход"
 
-#: task_manager/templates/includes/nav.html:36
-#: task_manager/templates/users/create.html:4
-msgid "Registration"
-msgstr "Регистрация"
-
 #: task_manager/templates/statuses/create.html:4
 #: task_manager/templates/statuses/list.html:5
 msgid "Create status"
@@ -133,10 +126,9 @@ msgstr "Создать статус"
 
 #: task_manager/templates/statuses/create.html:6
 #: task_manager/templates/tasks/create.html:6
-#, fuzzy
-#| msgid "Create task"
-msgid "Create"
+msgid "Create task"
 msgstr "Создать задачу"
+
 
 #: task_manager/templates/statuses/delete.html:4
 msgid "Deleting a status"
@@ -185,10 +177,6 @@ msgstr "Удалить"
 msgid "Update status"
 msgstr "Изменение статуса"
 
-#: task_manager/templates/tasks/create.html:4
-#: task_manager/templates/tasks/list.html:5
-msgid "Create task"
-msgstr "Создать задачу"
 
 #: task_manager/templates/tasks/delete.html:4
 msgid "Deleting a task"
@@ -217,11 +205,8 @@ msgstr "Дата создания"
 msgid "Update task"
 msgstr "Изменить задачу"
 
-#: task_manager/templates/users/create.html:6
-#, fuzzy
-#| msgid "Registration"
 msgid "Register"
-msgstr "Регистрация"
+msgstr "Зарегистрироваться"
 
 #: task_manager/templates/users/delete.html:4
 msgid "Deleting a user"
