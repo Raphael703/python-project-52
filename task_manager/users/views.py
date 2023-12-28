@@ -54,3 +54,12 @@ class UserDeleteView(LoginRequiredAndUserPassesTestMixin, SuccessMessageMixin,
     template_name = 'users/delete.html'
     success_url = reverse_lazy('user_list')
     success_message = _('User successfully deleted')
+
+    def post(self, request, *args, **kwargs):
+        if self.get_object().created_tasks.exists() or \
+                self.get_object().assigned_tasks.exists():
+            messages.error(
+                self.request,
+                _('Unable to delete a user because it is being used'))
+            return redirect('user_list')
+        return super().post(request, *args, **kwargs)
