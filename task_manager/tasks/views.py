@@ -12,7 +12,6 @@ class TaskListView(CustomLoginRequiredMixin, ListView):
     template_name = 'tasks/list.html'
     context_object_name = 'tasks'
 
-# Create your views here.
 
 class TaskCreateView(CustomLoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Task
@@ -24,4 +23,12 @@ class TaskCreateView(CustomLoginRequiredMixin, SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         form.instance.creator = self.request.user
         return super().form_valid(form)
+
+
+class TaskUpdateView(CustomLoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = Task
+    fields = ['name', 'description', 'status', 'executor']
+    template_name = 'tasks/update.html'
+    success_url = reverse_lazy('tasks_list')
+    success_message = _('The task has been successfully changed')
 
