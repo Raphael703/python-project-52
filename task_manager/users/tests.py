@@ -1,125 +1,173 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import reverse
 from django.test import TestCase
-
-from task_manager.users.forms import UserCreationForm
 
 
 def create_user(user_data):
     return get_user_model().objects.create_user(**user_data)
 
 
-class TestUserCreate(TestCase):
+class TestSetUpMixin:
     def setUp(self):
         self.users_data = {
+            'existed': {
+                'username': 'albert_einstein',
+                'first_name': 'Albert',
+                'last_name': 'Einstein',
+                'password': 'qwer1234qwer1234',
+            },
+            'existed_other': {
+                'username': 'leonardo_da_vinci',
+                'first_name': 'Leonardo',
+                'last_name': 'da Vinci',
+                'password': 'qwer1234qwer1234',
+            },
             'new': {
-                'username': 'johan',
-                'first_name': 'Johan',
-                'last_name': 'Weak',
+                'username': 'martin_luther',
+                'first_name': 'Martin',
+                'last_name': 'Luther',
                 'password1': 'qwer1234qwer1234',
                 'password2': 'qwer1234qwer1234',
             },
-            'invalid': {
-                'username': '',
-                'first_name': '',
-                'last_name': '',
-                'password1': '123',
-                'password2': '123',
-            }
+            'updated': {
+                'username': 'martin_luther',
+                'first_name': 'Martin',
+                'last_name': 'Luther King',
+                'password1': 'qwer1234qwer1234',
+                'password2': 'qwer1234qwer1234',
+            },
         }
+        self.existed_user_data = self.users_data['existed']
+        self.user = create_user(self.existed_user_data)
+        self.client.login(username=self.user.username,
+                          password=self.existed_user_data['password'])
+        self.url = reverse('user_create')
 
-    def test_create_user_page(self):
-        url = reverse('user_create')
-        response = self.client.get(url)
+
+class TestUserListView(TestSetUpMixin, TestCase):
+
+    def test_user_list_view_get(self):
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
-    def test_create_user_form_valid(self):
-        user_data = self.users_data['new']
-        form = UserCreationForm(user_data)
-        self.assertTrue(form.is_valid())
+    def test_user_list_view_get_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
 
-    def test_create_user_form_invalid(self):
-        user_data = self.users_data['invalid']
-        form = UserCreationForm(user_data)
-        self.assertFalse(form.is_valid())
 
-    def test_create_user_post(self):
-        url = reverse('user_create')
-        user_data = self.users_data['new']
-        response = self.client.post(url, user_data)
+class TestUserCreate(TestSetUpMixin, TestCase):
+
+    def test_user_create_view_get(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_create_post(self):
+        new_user_data = self.users_data['new']
+        response = self.client.post(self.url, new_user_data)
         self.assertRedirects(response, settings.LOGIN_URL)
 
-        created_new_user = get_user_model().objects.get(pk=1)
-        self.assertEqual(created_new_user.username, user_data['username'])
-        self.assertEqual(created_new_user.first_name, user_data['first_name'])
-        self.assertEqual(created_new_user.last_name, user_data['last_name'])
+        created_new_user = get_user_model().objects.get(username=new_user_data['username'])
+        self.assertEqual(created_new_user.username, new_user_data['username'])
+
+    def test_user_create_page_get_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_create_post_not_logged_in(self):
+        self.client.logout()
+        response = self.client.post(self.url, self.users_data['new'])
+        self.assertRedirects(response, settings.LOGIN_URL)
 
 
-class TestUserUpdate(TestCase):
+class TestUserUpdate(TestSetUpMixin, TestCase):
+
     def setUp(self):
-        self.users_data = {
-            'initial': {
-                'username': 'johan',
-                'first_name': 'Johan',
-                'last_name': 'Weak',
-                'password': 'qwer1234qwer1234',
-            },
-            'updated': {
-                'username': 'johan',
-                'first_name': 'Johan101',
-                'last_name': 'Weakness',
-                'password1': 'qwer1234qwer1234qwer1234',
-                'password2': 'qwer1234qwer1234qwer1234',
-            },
-        }
+        super().setUp()
+        self.url_self = reverse('user_update', kwargs={'pk': self.user.pk})
+        self.url_other = reverse('user_update', kwargs={'pk': create_user(self.users_data['existed_other']).pk})
 
-    def login(self, username, password):
-        self.client.login(username=username, password=password)
+    def test_user_update_view_get_self_user(self):
+        response = self.client.get(self.url_self)
+        self.assertEqual(response.status_code, 200)
 
-    def test_update_user_page(self):
-        user_data = self.users_data['initial']
-        new_user = create_user(user_data)
-        url = reverse('user_update', kwargs={'pk': new_user.pk})
-        response = self.client.get(url)
-        self.assertRedirects(response, settings.LOGIN_URL)
+    def test_user_update_view_get_other_user(self):
+        response = self.client.get(self.url_other)
+        self.assertRedirects(response, reverse('user_list'))
 
-        self.login(new_user.username, user_data['password'])
+    def test_user_update_view_post_self_user(self):
         updated_user_data = self.users_data['updated']
-        self.client.post(url, updated_user_data)
-        updated_user = get_user_model().objects.get(pk=new_user.pk)
-        self.assertEqual(updated_user.username, updated_user_data['username'])
-        self.assertEqual(updated_user.first_name, updated_user_data['first_name'])
-        self.assertEqual(updated_user.last_name, updated_user_data['last_name'])
+        response = self.client.post(self.url_self, updated_user_data)
+        self.assertRedirects(response, reverse('user_list'))
 
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.username, updated_user_data['username'])
 
-class TestUserDelete(TestCase):
-    def setUp(self):
-        self.users_data = {
-            'initial': {
-                'username': 'johan',
-                'first_name': 'Johan',
-                'last_name': 'Weak',
-                'password': 'qwer1234qwer1234',
-            }
-        }
+    def test_user_update_view_post_other_user(self):
+        updated_user_data = self.users_data['updated']
+        response = self.client.post(self.url_other, updated_user_data)
+        self.assertRedirects(response, reverse('user_list'))
 
-    def login(self, username, password):
-        self.client.login(username=username, password=password)
+        self.user.refresh_from_db()
+        self.assertNotEqual(self.user.username, updated_user_data['username'])
 
-    def test_update_user_page(self):
-        user_data = self.users_data['initial']
-        new_user = create_user(user_data)
-        user_delete_url = reverse('user_delete', kwargs={'pk': new_user.pk})
-        response = self.client.get(user_delete_url)
+    def test_user_update_view_get_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(self.url_self)
         self.assertRedirects(response, settings.LOGIN_URL)
 
-        response_post = self.client.post(user_delete_url)
-        self.assertRedirects(response_post, settings.LOGIN_URL)
+    def test_user_update_view_post_not_logged_in(self):
+        self.client.logout()
+        response = self.client.post(self.url_self, self.users_data['updated'])
+        self.assertRedirects(response, settings.LOGIN_URL)
 
-        self.login(new_user.username, user_data['password'])
-        delete_response = self.client.post(user_delete_url)
-        self.assertRedirects(delete_response, reverse('user_list'))
-        with self.assertRaises(ObjectDoesNotExist):
-            get_user_model().objects.get(pk=new_user.pk)
+        self.user.refresh_from_db()
+        self.assertNotEqual(self.user.username, self.users_data['updated']['username'])
+
+
+class TestUserDelete(TestSetUpMixin, TestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.url_self = reverse('user_delete', kwargs={'pk': self.user.pk})
+        self.url_other = reverse('user_delete', kwargs={'pk': create_user(self.users_data['existed_other']).pk})
+
+    def test_user_delete_view_get_self_user(self):
+        response = self.client.get(self.url_self)
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_delete_view_get_other_user(self):
+        response = self.client.get(self.url_other)
+        self.assertRedirects(response, reverse('user_list'))
+
+    def test_user_delete_view_post_self_user(self):
+        response = self.client.post(self.url_self)
+        self.assertRedirects(response, reverse('user_list'))
+
+        self.assertFalse(
+            get_user_model().objects.filter(pk=self.user.pk).exists(),
+            'User should not exist after self-deletion'
+        )
+
+    def test_user_delete_view_post_other_user(self):
+        response = self.client.post(self.url_other)
+        self.assertRedirects(response, reverse('user_list'))
+
+        self.assertTrue(
+            get_user_model().objects.filter(pk=self.user.pk).exists(),
+            'User should exist after try to deletion by other user'
+        )
+
+    def test_user_delete_view_get_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(self.url_self)
+        self.assertRedirects(response, settings.LOGIN_URL)
+
+    def test_user_delete_view_post_not_logged_in(self):
+        self.client.logout()
+        response = self.client.post(self.url_self)
+        self.assertRedirects(response, settings.LOGIN_URL)
+
+        self.assertTrue(get_user_model().objects.filter(pk=self.user.pk).exists())
