@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block header %}
+{% translate 'Viewing a task' %}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{ task.name }}</h5>
+        <p class="card-text">{{ task.description }}</p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <span class="badge bg-secondary">{% translate 'Author' %}:</span> {{ task.creator }}
+        </li>
+        <li class="list-group-item">
+            <span class="badge bg-secondary">{% translate 'Executor' %}:</span> {{ task.executor }}
+        </li>
+        <li class="list-group-item">
+            <span class="badge bg-secondary">{% translate 'Status' %}:</span> {{ task.status }}
+        </li>
+        <li class="list-group-item">
+            <span class="badge bg-secondary">{% translate 'Date and time of creation' %}:</span> {{ task.created_at }}
+        </li>
+
+    </ul>
+    <div class="card-body">
+        <a href="{% url 'task_update' task.id %}">{% translate 'Update' %}</a>
+        <br>
+        <a href="{% url 'task_delete' task.id %}">{% translate 'Delete' %}</a>
+    </div>
+</div>
+
+{% endblock %}
