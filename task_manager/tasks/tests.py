@@ -44,6 +44,21 @@ class TestSetUpDataAndLoginUserMixin:
                           password=self.users_data['logined_user']['password'])
 
 
+class TestTaskDetailView(TestSetUpDataAndLoginUserMixin, TestCase):
+    def setUp(self):
+        super().setUp()
+        self.url = reverse('task_detail', kwargs={'pk': self.created_task.pk})
+
+    def test_task_detail_view_get(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_status_detail_view_get_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(self.url)
+        self.assertRedirects(response, settings.LOGIN_URL)
+
+
 class TestTaskListView(TestSetUpDataAndLoginUserMixin, TestCase):
     def setUp(self):
         super().setUp()
