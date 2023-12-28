@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block content %}
+<a class="btn btn-primary" href="{% url 'task_create' %}">{% translate 'Create task' %}</a>
 <table class="table">
     <thead>
     <tr>
@@ -21,7 +22,11 @@
         <td>{{ task.name }}</td>
         <td>{{ task.status }}</td>
         <td>{{ task.creator }}</td>
-        <td>{{ task.executor }}</td>
+        {% if task.executor %}
+            <td>{{ task.executor }}</td>
+        {% else %}
+            <td></td>
+        {% endif %}
         <td>{{ task.created_at }}</td>
 <!--        <td>-->
 <!--          <a href="{% url 'user_update' user.id %}">{% translate 'Update' %}</a>-->
