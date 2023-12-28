@@ -9,10 +9,10 @@ from task_manager.statuses.models import Status
 class Task(models.Model):
     name = models.CharField(_('name'), max_length=256, unique=True)
     description = models.TextField(_('description'), blank=True)
-    status = models.OneToOneField(
+    status = models.ForeignKey(
         Status,
         on_delete=models.PROTECT,
-        related_name='task',
+        related_name='tasks',
         verbose_name=_('status'),
     )
     creator = models.ForeignKey(
