@@ -1,19 +1,19 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
+from task_manager.mixins import CustomLoginRequiredMixin
 from task_manager.statuses.models import Status
 
 
-class StatusListView(LoginRequiredMixin, ListView):
+class StatusListView(CustomLoginRequiredMixin, ListView):
     model = Status
     template_name = 'statuses/list.html'
     context_object_name = 'statuses'
 
 
-class StatusCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+class StatusCreateView(CustomLoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Status
     template_name = 'statuses/create.html'
     fields = ['name']
@@ -21,7 +21,7 @@ class StatusCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     success_message = _('The status has been successfully created')
 
 
-class StatusUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class StatusUpdateView(CustomLoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Status
     fields = ['name']
     template_name = 'statuses/update.html'
@@ -29,7 +29,7 @@ class StatusUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     success_message = _('The status has been successfully changed')
 
 
-class StatusDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+class StatusDeleteView(CustomLoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Status
     template_name = 'statuses/delete.html'
     success_url = reverse_lazy('statuses_list')
