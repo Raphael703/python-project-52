@@ -15,6 +15,9 @@ makemessages:
 compilemessages:
 	poetry run ./manage.py compilemessages
 
+makemigrations:
+	poetry run ./manage.py makemigrations
+
 migrate:
 	poetry run ./manage.py migrate
 
