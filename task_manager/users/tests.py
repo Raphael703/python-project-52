@@ -3,6 +3,9 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import reverse
 from django.test import TestCase
 
+from task_manager.statuses.models import Status
+from task_manager.tasks.models import Task
+
 
 def create_user(user_data):
     return get_user_model().objects.create_user(**user_data)
@@ -159,6 +162,30 @@ class TestUserDelete(TestUserSetUpMixin, TestCase):
         self.assertFalse(
             get_user_model().objects.filter(pk=self.user.pk).exists(),
             'User should not exist after self-deletion'
+        )
+
+    def test_user_delete_view_post_self_user_created_task(self):
+        status = Status.objects.create(name='Some status')
+        Task.objects.create(
+            name='Do smth', status=status, creator=self.user
+        )
+        response = self.client.post(self.url_self)
+        self.assertRedirects(response, reverse('user_list'))
+
+        self.assertTrue(
+            get_user_model().objects.filter(pk=self.user.pk).exists(),
+            'User should exist if it related to Task by creator or executor self-deletion'
+        )
+        Task.objects.create(
+            name='Do smth by user', status=status,
+            creator=self.other_user, executor=self.user
+        )
+        response = self.client.post(self.url_self)
+        self.assertRedirects(response, reverse('user_list'))
+
+        self.assertTrue(
+            get_user_model().objects.filter(pk=self.user.pk).exists(),
+            'User should exist if it related to Task by creator or executor self-deletion'
         )
 
     def test_user_delete_view_post_other_user(self):
