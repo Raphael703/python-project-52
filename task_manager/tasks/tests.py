@@ -136,6 +136,20 @@ class TestTaskDeleteView(TestSetUpDataAndLoginUserMixin, TestCase):
 
         self.assertFalse(Task.objects.filter(pk=self.created_task.pk).exists())
 
+    def test_task_delete_view_post_other_user(self):
+        other_user = get_user_model().objects.create(username='other_user',
+                                                     password='qwer1234qwer1234')
+        other_user_task = Task.objects.create(name='Other user task',
+                                              status=self.status_initial,
+                                              creator=other_user)
+        response = self.client.post(self.url)
+        self.assertRedirects(response, reverse('tasks_list'))
+
+        self.assertTrue(
+            Task.objects.filter(pk=other_user_task.pk).exists(),
+            'Task should not be deleted by other user'
+        )
+
     def test_task_delete_view_get_not_logged_in(self):
         self.client.logout()
         response = self.client.get(self.url)
