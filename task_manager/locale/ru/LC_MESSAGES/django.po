@@ -28,7 +28,7 @@ msgstr "имя"
 #: task_manager/labels/models.py:9 task_manager/statuses/models.py:9
 #: task_manager/tasks/models.py:40
 msgid "created datetime"
-msgstr "создано время"
+msgstr "дата и время создания"
 
 #: task_manager/labels/models.py:16 task_manager/tasks/filters.py:20
 msgid "Label"
@@ -83,7 +83,7 @@ msgstr "Невозможно удалить статус, потому что о
 
 #: task_manager/tasks/filters.py:14
 msgid "Only your own tasks"
-msgstr "Только ваши собственные задачи"
+msgstr "Только свои задачи"
 
 #: task_manager/tasks/models.py:12
 msgid "description"
@@ -95,7 +95,7 @@ msgstr "статус"
 
 #: task_manager/tasks/models.py:23
 msgid "creator"
-msgstr "создатель"
+msgstr "автор"
 
 #: task_manager/tasks/models.py:31
 msgid "executor"
@@ -115,7 +115,7 @@ msgstr "Задачи"
 
 #: task_manager/tasks/views.py:32
 msgid "The task has been created"
-msgstr "Задача создана"
+msgstr "Задача успешно создана"
 
 #: task_manager/tasks/views.py:44
 msgid "The task has been successfully changed"
@@ -127,7 +127,7 @@ msgstr "Задача успешно удалена"
 
 #: task_manager/tasks/views.py:57
 msgid "Only the author of the task can delete it"
-msgstr "Только автор задачи может ее удалить"
+msgstr "Задачу может удалить только ее автор"
 
 #: task_manager/templates/base.html:12
 #: task_manager/templates/includes/nav.html:4
@@ -199,7 +199,7 @@ msgstr "Дата и время создания"
 #: task_manager/templates/tasks/list.html:18
 #: task_manager/templates/users/list.html:12
 msgid "Manage"
-msgstr "Управление"
+msgstr "Управлять"
 
 #: task_manager/templates/labels/list.html:22
 #: task_manager/templates/labels/update.html:6
@@ -211,7 +211,7 @@ msgstr "Управление"
 #: task_manager/templates/users/list.html:23
 #: task_manager/templates/users/update.html:6
 msgid "Update"
-msgstr "Обновить"
+msgstr "Изменить"
 
 #: task_manager/templates/labels/list.html:24
 #: task_manager/templates/statuses/list.html:24
@@ -223,7 +223,7 @@ msgstr "Удалить"
 
 #: task_manager/templates/labels/update.html:4
 msgid "Update label"
-msgstr "Обновить метку"
+msgstr "Изменение метки"
 
 #: task_manager/templates/statuses/create.html:4
 #: task_manager/templates/statuses/list.html:5
@@ -236,7 +236,7 @@ msgstr "Удаление статуса"
 
 #: task_manager/templates/statuses/update.html:4
 msgid "Update status"
-msgstr "Обновить статус"
+msgstr "Изменение статуса"
 
 #: task_manager/templates/tasks/create.html:4
 #: task_manager/templates/tasks/list.html:5
@@ -272,11 +272,11 @@ msgstr "Дата создания"
 
 #: task_manager/templates/tasks/update.html:4
 msgid "Update task"
-msgstr "Обновить задачу"
+msgstr "Изменение задачи"
 
 #: task_manager/templates/users/create.html:6
 msgid "Register"
-msgstr "Регистрация"
+msgstr "Зарегистрировать"
 
 #: task_manager/templates/users/delete.html:4
 msgid "Deleting a user"
@@ -296,19 +296,19 @@ msgstr "Войти"
 
 #: task_manager/templates/users/update.html:4
 msgid "Update user"
-msgstr "Обновить пользователя"
+msgstr "Изменение пользователя"
 
 #: task_manager/users/views.py:21
 msgid "You are not logged in! Please sign in."
-msgstr "Вы не вошли в систему! Пожалуйста, войдите."
+msgstr "Вы не авторизованы! Пожалуйста, выполните вход."
 
 #: task_manager/users/views.py:26
 msgid "You do not have permission to modify another user."
-msgstr "У вас нет разрешения на изменение другого пользователя."
+msgstr "У вас нет прав для изменения другого пользователя."
 
 #: task_manager/users/views.py:48
 msgid "User successfully updated"
-msgstr "Пользователь успешно обновлен"
+msgstr "Пользователь успешно изменен"
 
 #: task_manager/users/views.py:56
 msgid "User successfully deleted"
@@ -320,8 +320,8 @@ msgstr "Невозможно удалить пользователя, потом
 
 #: task_manager/views.py:16
 msgid "You are logged in"
-msgstr "Вы вошли в систему"
+msgstr "Вы залогинены"
 
 #: task_manager/views.py:24
 msgid "You are logged out"
-msgstr "Вы вышли из системы"
+msgstr "Вы разлогинены"
