@@ -42,5 +42,5 @@ class LabelDeleteView(CustomLoginRequiredMixin, SuccessMessageMixin, DeleteView)
             messages.error(
                 self.request,
                 _('Unable to delete a label because it is being used'))
-            return redirect('user_list')
+            return redirect('labels_list')
         return super().post(request, *args, **kwargs)
