@@ -1,0 +1,14 @@
+{% load i18n %}
+{% load django_bootstrap5 %}
+
+<div class="card mb-3">
+    <div class="card-body bg-light">
+        <form class="form-inline center" method="get">
+            {% bootstrap_field filter.form.status%}
+            {% bootstrap_field filter.form.executor%}
+            {% bootstrap_field filter.form.label%}
+            {% bootstrap_field filter.form.own_tasks%}
+            <input class="btn btn-primary" type="submit" value="{% translate 'Show' %}">
+        </form>
+    </div>
+</div>
