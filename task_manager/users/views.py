@@ -33,10 +33,11 @@ class UserListView(ListView):
     context_object_name = 'users'
 
 
-class UserCreateView(CreateView):
+class UserCreateView(SuccessMessageMixin, CreateView):
     template_name = 'users/create.html'
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
+    success_message = _('The user has been successfully registered')
 
 
 class UserUpdateView(LoginRequiredAndUserPassesTestMixin, SuccessMessageMixin,
