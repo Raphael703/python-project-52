@@ -8,9 +8,6 @@ from task_manager.statuses.models import Status
 from task_manager.tasks.models import Task
 
 
-def create_status(name):
-    return Status.objects.create(name=name)
-
 class TestCaseSetUpLoginedUserMixin:
     def setUp(self):
         super().setUp()
