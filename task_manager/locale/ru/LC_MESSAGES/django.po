@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-29 14:23+0000\n"
+"POT-Creation-Date: 2023-12-29 15:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -133,6 +133,14 @@ msgstr "Задачу может удалить только ее автор"
 #: task_manager/templates/includes/nav.html:4
 msgid "Task manager"
 msgstr "Менеджер задач"
+
+#: task_manager/templates/index.html:8
+msgid "Greetings to all!"
+msgstr "Всех приветствую!"
+
+#: task_manager/templates/index.html:9
+msgid "This is a web application for structuring your tasks"
+msgstr "Это Web приложения для структуризации ваших задач"
 
 #: task_manager/templates/forms/delete_form.html:6
 msgid "Are you sure you want to delete"
@@ -322,6 +330,6 @@ msgstr "Невозможно удалить пользователя, потом
 msgid "You are logged in"
 msgstr "Вы залогинены"
 
-#: task_manager/views.py:24
+#: task_manager/views.py:23
 msgid "You are logged out"
 msgstr "Вы разлогинены"
