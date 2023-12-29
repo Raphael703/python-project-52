@@ -1,0 +1,6 @@
+{% extends 'forms/delete_form.html' %}
+{% load i18n %}
+
+{% block header %}{% translate 'Deleting a label' %}{% endblock %}
+
+{% block object_name %}{{ object.name }}{% endblock %}
