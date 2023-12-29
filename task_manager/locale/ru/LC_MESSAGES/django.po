@@ -333,3 +333,7 @@ msgstr "Вы залогинены"
 #: task_manager/views.py:23
 msgid "You are logged out"
 msgstr "Вы разлогинены"
+
+#: task_manager/users/views.py:40
+msgid "The user has been successfully registered"
+msgstr "Пользователь успешно зарегистрирован"
