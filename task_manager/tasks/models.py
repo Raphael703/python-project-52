@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from task_manager.labels.models import Label
 from task_manager.statuses.models import Status
 
 
@@ -28,6 +29,12 @@ class Task(models.Model):
         blank=True,
         null=True,
         verbose_name=_('executor'),
+    )
+    labels = models.ManyToManyField(
+        Label,
+        related_name='tasks',
+        blank=True,
+        verbose_name=_('labels'),
     )
     created_at = models.DateTimeField(
         _('created datetime'), default=timezone.now
