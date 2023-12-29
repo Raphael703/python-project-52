@@ -27,4 +27,10 @@ shell:
 start:
 	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) task_manager.wsgi:application
 
-prod: migrate compilemessages start
+prod: migrate start
+
+test:
+	poetry run ./manage.py test
+
+test-coverage:
+	poetry run coverage run --source='.' manage.py test
