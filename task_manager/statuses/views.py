@@ -1,5 +1,4 @@
-from pyexpat.errors import messages
-
+from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -43,5 +42,5 @@ class StatusDeleteView(CustomLoginRequiredMixin, SuccessMessageMixin, DeleteView
             messages.error(
                 self.request,
                 _('Unable to delete a status because it is being used'))
-            return redirect('user_list')
+            return redirect('statuses_list')
         return super().post(request, *args, **kwargs)
