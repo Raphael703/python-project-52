@@ -153,7 +153,7 @@ msgstr "Выход"
 #: task_manager/templates/includes/nav.html:36
 #: task_manager/templates/users/login.html:4
 msgid "Login"
-msgstr "Войти"
+msgstr "Вход"
 
 #: task_manager/templates/includes/nav.html:41
 #: task_manager/templates/users/create.html:4
@@ -292,7 +292,7 @@ msgstr "Полное имя"
 
 #: task_manager/templates/users/login.html:6
 msgid "Sign In"
-msgstr "Вход"
+msgstr "Войти"
 
 #: task_manager/templates/users/update.html:4
 msgid "Update user"
