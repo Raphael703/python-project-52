@@ -292,7 +292,7 @@ msgstr "Полное имя"
 
 #: task_manager/templates/users/login.html:6
 msgid "Sign In"
-msgstr "Войти"
+msgstr "Вход"
 
 #: task_manager/templates/users/update.html:4
 msgid "Update user"
