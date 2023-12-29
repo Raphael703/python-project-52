@@ -1,24 +1,12 @@
 from django.conf import settings
-from django.contrib.auth import get_user_model
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import reverse
 from django.test import TestCase
 
 from task_manager.statuses.models import Status
 from task_manager.tasks.models import Task
-
-
-class TestCaseSetUpLoginedUserMixin:
-    def setUp(self):
-        super().setUp()
-        self.logined_user_data = {'username': 'albert_einstein',
-                                  'password': 'qwer1234qwer1234'}
-        self.logined_user = get_user_model().objects.create_user(
-            username=self.logined_user_data['username'],
-            password=self.logined_user_data['password']
-        )
-        self.client.login(username=self.logined_user.username,
-                          password=self.logined_user_data['password'])
+from task_manager.tests import TestCaseSetUpLoginedUserMixin
 
 
 class TestStatusListView(TestCaseSetUpLoginedUserMixin, TestCase):
