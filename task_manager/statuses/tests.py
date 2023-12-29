@@ -53,8 +53,7 @@ class TestStatusCreateView(TestCaseSetUpLoginedUserMixin, TestCase):
         response = self.client.post(self.url, {'name': self.test_status_name})
         self.assertRedirects(response, reverse('statuses_list'))
 
-        status = Status.objects.get(name=self.test_status_name)
-        self.assertEqual(status.name, self.test_status_name)
+        self.assertTrue(Status.objects.filter(name=self.test_status_name).exists())
 
     def test_status_create_view_get_not_logged_in(self):
         self.client.logout()
