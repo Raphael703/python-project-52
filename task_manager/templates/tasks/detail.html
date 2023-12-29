@@ -24,7 +24,14 @@
         <li class="list-group-item">
             <span class="badge bg-secondary">{% translate 'Date and time of creation' %}:</span> {{ task.created_at }}
         </li>
-
+        <li class="list-group-item">
+            <span class="badge bg-secondary">{% translate 'Labels' %}:</span>
+            <ul>
+                {% for label in task.labels.all %}
+                <li>{{ label.name }}</li>
+                {% endfor %}
+            </ul>
+        </li>
     </ul>
     <div class="card-body">
         <a href="{% url 'task_update' task.id %}">{% translate 'Update' %}</a>
