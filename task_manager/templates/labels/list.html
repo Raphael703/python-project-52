@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
+{% block header %}{% translate 'Labels' %}{% endblock %}
+
 {% block content %}
 <a class="btn btn-primary" href="{% url 'label_create' %}">{% translate 'Create label' %}</a>
 <table class="table">

@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
+{% block header %}{% translate 'Statuses' %}{% endblock %}
+
 {% block content %}
 <a class="btn btn-primary" href="{% url 'status_create' %}">{% translate 'Create status' %}</a>
 <table class="table">
