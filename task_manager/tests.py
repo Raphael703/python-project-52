@@ -1,16 +1,20 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.urls import reverse
 
 
 class SetUpLoggedUserMixin:
-    def setUp(self):
-        self.logged_user_data = {'username': 'albert_einstein',
-                                 'password': 'qwer1234qwer1234'}
-        self.logged_user = get_user_model().objects.create_user(
-            username=self.logged_user_data['username'],
-            password=self.logged_user_data['password']
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+        cls.logged_user_data = {'username': 'albert_einstein',
+                                'password': 'qwer1234qwer1234'}
+        cls.logged_user = get_user_model().objects.create_user(
+            username=cls.logged_user_data['username'],
+            password=cls.logged_user_data['password']
         )
+
+    def setUp(self):
         self.client.login(username=self.logged_user.username,
                           password=self.logged_user_data['password'])
 
@@ -18,6 +22,7 @@ class SetUpLoggedUserMixin:
 class TestIndexTemplateView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.url = reverse('index')
 
     def test_index_view_get(self):
@@ -32,6 +37,7 @@ class TestIndexTemplateView(SetUpLoggedUserMixin, TestCase):
 class TestUserLoginView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.url = reverse('login')
 
     def test_user_login_view_get(self):
@@ -52,6 +58,7 @@ class TestUserLoginView(SetUpLoggedUserMixin, TestCase):
 class TestUserLogoutView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.url = reverse('logout')
 
     def test_user_logout_view_post(self):
