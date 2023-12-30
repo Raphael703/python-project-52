@@ -96,9 +96,9 @@ http://127.0.0.1:7777
 ```sh
 make lint
 ```
-#### Run test
+#### Run test local
 ```sh
-make lint
+make test
 ```
 
 ## How to deploy
