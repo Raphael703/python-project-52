@@ -12,6 +12,7 @@ from task_manager.tests import SetUpLoggedUserMixin
 class TestLabelListView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.url = reverse('labels_list')
 
     def test_label_list_view(self):
@@ -27,6 +28,7 @@ class TestLabelListView(SetUpLoggedUserMixin, TestCase):
 class TestLabelCreateView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.test_label_name = 'Test label name'
         cls.url = reverse('label_create')
 
@@ -56,6 +58,7 @@ class TestLabelCreateView(SetUpLoggedUserMixin, TestCase):
 class TestLabelUpdateView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.test_label = Label.objects.create(name='Test label')
         cls.test_label_name_to_update = 'Updated label name'
         cls.url = reverse('label_update',
@@ -93,6 +96,7 @@ class TestLabelUpdateView(SetUpLoggedUserMixin, TestCase):
 class TestLabelDeleteView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.test_label = Label.objects.create(name='Test label')
         cls.url = reverse('label_delete', kwargs={'pk': cls.test_label.pk})
 

@@ -12,6 +12,7 @@ from task_manager.tests import SetUpLoggedUserMixin
 class TestStatusListView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.url = reverse('statuses_list')
 
     def test_status_list_view(self):
@@ -27,6 +28,7 @@ class TestStatusListView(SetUpLoggedUserMixin, TestCase):
 class TestStatusCreateView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.test_status_name = 'Test status name'
         cls.url = reverse('status_create')
 
@@ -56,6 +58,7 @@ class TestStatusCreateView(SetUpLoggedUserMixin, TestCase):
 class TestStatusUpdateView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.test_status = Status.objects.create(name='Test status')
         cls.test_status_name_to_update = 'Updated status name'
         cls.url = reverse('status_update',
@@ -93,6 +96,7 @@ class TestStatusUpdateView(SetUpLoggedUserMixin, TestCase):
 class TestStatusDeleteView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.test_status = Status.objects.create(name='Test status')
         cls.url = reverse('status_delete', kwargs={'pk': cls.test_status.pk})
 

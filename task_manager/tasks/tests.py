@@ -10,9 +10,10 @@ from task_manager.tasks.models import Task
 from task_manager.tests import SetUpLoggedUserMixin
 
 
-class SetUpTestDataTaskMixin:
+class SetUpLoggedUserAndTestDataTaskMixin(SetUpLoggedUserMixin):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.test_status = Status.objects.create(name='Test status')
         cls.other_user = get_user_model().objects.create(username='nelson_mandela',
                                                          password='qwer1234qwer')
@@ -21,7 +22,7 @@ class SetUpTestDataTaskMixin:
                                             creator=cls.other_user)
 
 
-class TestTaskDetailView(SetUpLoggedUserMixin, SetUpTestDataTaskMixin, TestCase):
+class LoggedUserAndTestTaskDetailView(SetUpLoggedUserAndTestDataTaskMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
@@ -37,7 +38,7 @@ class TestTaskDetailView(SetUpLoggedUserMixin, SetUpTestDataTaskMixin, TestCase)
         self.assertRedirects(response, settings.LOGIN_URL)
 
 
-class TestTaskFilterView(SetUpLoggedUserMixin, SetUpTestDataTaskMixin, TestCase):
+class LoggedUserAndTestTaskFilterView(SetUpLoggedUserAndTestDataTaskMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
@@ -48,12 +49,9 @@ class TestTaskFilterView(SetUpLoggedUserMixin, SetUpTestDataTaskMixin, TestCase)
         )
 
         cls.url = reverse('tasks_list')
-
-    def setUp(self):
-        super().setUp()
-        self.logged_user_task = Task.objects.create(name='Logged user task',
-                                                    status=self.other_status,
-                                                    creator=self.logged_user)
+        cls.logged_user_task = Task.objects.create(name='Logged user task',
+                                                   status=cls.other_status,
+                                                   creator=cls.logged_user)
 
     def test_task_filter_view_get(self):
         response = self.client.get(self.url)
@@ -110,7 +108,7 @@ class TestTaskFilterView(SetUpLoggedUserMixin, SetUpTestDataTaskMixin, TestCase)
         self.assertRedirects(response, settings.LOGIN_URL)
 
 
-class TestTaskCreateView(SetUpLoggedUserMixin, SetUpTestDataTaskMixin, TestCase):
+class LoggedUserAndTestTaskCreateView(SetUpLoggedUserAndTestDataTaskMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
@@ -144,7 +142,7 @@ class TestTaskCreateView(SetUpLoggedUserMixin, SetUpTestDataTaskMixin, TestCase)
         self.assertFalse(Task.objects.filter(name=self.data_to_create_task).exists())
 
 
-class TestTaskUpdateView(SetUpLoggedUserMixin, SetUpTestDataTaskMixin, TestCase):
+class LoggedUserAndTestTaskUpdateView(SetUpLoggedUserAndTestDataTaskMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
@@ -181,18 +179,15 @@ class TestTaskUpdateView(SetUpLoggedUserMixin, SetUpTestDataTaskMixin, TestCase)
         self.assertNotEqual(self.test_task.name, self.data_to_update_task['name'])
 
 
-class TestTaskDeleteView(SetUpLoggedUserMixin, SetUpTestDataTaskMixin, TestCase):
+class LoggedUserAndTestTaskDeleteView(SetUpLoggedUserAndTestDataTaskMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
         cls.url_other = reverse('task_delete', kwargs={'pk': cls.test_task.pk})
-
-    def setUp(self):
-        super().setUp()
-        self.logged_user_task = Task.objects.create(name='Logged user task',
-                                                    status=self.test_status,
-                                                    creator=self.logged_user)
-        self.url_own = reverse('task_delete', kwargs={'pk': self.logged_user_task.pk})
+        cls.logged_user_task = Task.objects.create(name='Logged user task',
+                                                   status=cls.test_status,
+                                                   creator=cls.logged_user)
+        cls.url_own = reverse('task_delete', kwargs={'pk': cls.logged_user_task.pk})
 
     def test_task_delete_view_get(self):
         response = self.client.get(self.url_own)

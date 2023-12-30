@@ -12,6 +12,7 @@ from task_manager.tests import SetUpLoggedUserMixin
 class TestUserListView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.url = reverse('user_list')
 
     def test_user_list_view_get(self):
@@ -27,6 +28,7 @@ class TestUserListView(SetUpLoggedUserMixin, TestCase):
 class TestUserCreate(TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.data_to_create_user = {
             'username': 'albert_einstein',
             'password1': 'qwer1234qwer1234',
@@ -49,6 +51,7 @@ class TestUserCreate(TestCase):
 class TestUserUpdate(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.other_user_data = {
             'username': 'confucius',
             'password': 'qwer1234qwer1234',
@@ -61,11 +64,8 @@ class TestUserUpdate(SetUpLoggedUserMixin, TestCase):
             'password2': 'qwer1234qwer1234',
         }
         cls.other_user = get_user_model().objects.create(**cls.other_user_data)
+        cls.url_self = reverse('user_update', kwargs={'pk': cls.logged_user.pk})
         cls.url_other = reverse('user_update', kwargs={'pk': cls.other_user.pk})
-
-    def setUp(self):
-        super().setUp()
-        self.url_self = reverse('user_update', kwargs={'pk': self.logged_user.pk})
 
     def test_user_update_view_get_self_user(self):
         response = self.client.get(self.url_self)
@@ -111,16 +111,14 @@ class TestUserUpdate(SetUpLoggedUserMixin, TestCase):
 class TestUserDelete(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        super().setUpTestData()
         cls.other_user_data = {
             'username': 'confucius',
             'password': 'qwer1234qwer1234',
         }
         cls.other_user = get_user_model().objects.create(**cls.other_user_data)
+        cls.url_self = reverse('user_delete', kwargs={'pk': cls.logged_user.pk})
         cls.url_other = reverse('user_delete', kwargs={'pk': cls.other_user.pk})
-
-    def setUp(self):
-        super().setUp()
-        self.url_self = reverse('user_delete', kwargs={'pk': self.logged_user.pk})
 
     def test_user_delete_view_get_self_user(self):
         response = self.client.get(self.url_self)
