@@ -6,10 +6,10 @@ from django.test import TestCase
 from task_manager.labels.models import Label
 from task_manager.statuses.models import Status
 from task_manager.tasks.models import Task
-from task_manager.tests import TestCaseSetUpLoginedUserMixin
+from task_manager.tests import TestCaseSetUpLoggedUserMixin
 
 
-class TestLabelListView(TestCaseSetUpLoginedUserMixin, TestCase):
+class TestLabelListView(TestCaseSetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.url = reverse('labels_list')
@@ -24,7 +24,7 @@ class TestLabelListView(TestCaseSetUpLoginedUserMixin, TestCase):
         self.assertRedirects(response, settings.LOGIN_URL)
 
 
-class TestLabelCreateView(TestCaseSetUpLoginedUserMixin, TestCase):
+class TestLabelCreateView(TestCaseSetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_label_name = 'Test label name'
@@ -53,7 +53,7 @@ class TestLabelCreateView(TestCaseSetUpLoginedUserMixin, TestCase):
         self.assertFalse(Label.objects.filter(name=self.test_label_name).exists())
 
 
-class TestLabelUpdateView(TestCaseSetUpLoginedUserMixin, TestCase):
+class TestLabelUpdateView(TestCaseSetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_label = Label.objects.create(name='Test label')
@@ -90,7 +90,7 @@ class TestLabelUpdateView(TestCaseSetUpLoginedUserMixin, TestCase):
         self.assertNotEqual(self.test_label.name, self.test_label_name_to_update)
 
 
-class TestLabelDeleteView(TestCaseSetUpLoginedUserMixin, TestCase):
+class TestLabelDeleteView(TestCaseSetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_label = Label.objects.create(name='Test label')
@@ -111,7 +111,7 @@ class TestLabelDeleteView(TestCaseSetUpLoginedUserMixin, TestCase):
         task = Task.objects.create(
             name='Test task',
             status=Status.objects.create(name='Test status'),
-            creator=self.logined_user)
+            creator=self.logged_user)
         task.labels.set([self.test_label])
 
         response = self.client.post(self.url)

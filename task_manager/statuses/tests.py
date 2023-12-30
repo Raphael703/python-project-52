@@ -6,10 +6,10 @@ from django.test import TestCase
 
 from task_manager.statuses.models import Status
 from task_manager.tasks.models import Task
-from task_manager.tests import TestCaseSetUpLoginedUserMixin
+from task_manager.tests import TestCaseSetUpLoggedUserMixin
 
 
-class TestStatusListView(TestCaseSetUpLoginedUserMixin, TestCase):
+class TestStatusListView(TestCaseSetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.url = reverse('statuses_list')
@@ -24,7 +24,7 @@ class TestStatusListView(TestCaseSetUpLoginedUserMixin, TestCase):
         self.assertRedirects(response, settings.LOGIN_URL)
 
 
-class TestStatusCreateView(TestCaseSetUpLoginedUserMixin, TestCase):
+class TestStatusCreateView(TestCaseSetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status_name = 'Test status name'
@@ -53,7 +53,7 @@ class TestStatusCreateView(TestCaseSetUpLoginedUserMixin, TestCase):
         self.assertFalse(Status.objects.filter(name=self.test_status_name).exists())
 
 
-class TestStatusUpdateView(TestCaseSetUpLoginedUserMixin, TestCase):
+class TestStatusUpdateView(TestCaseSetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status = Status.objects.create(name='Test status')
@@ -90,7 +90,7 @@ class TestStatusUpdateView(TestCaseSetUpLoginedUserMixin, TestCase):
         self.assertNotEqual(self.test_status.name, self.test_status_name_to_update)
 
 
-class TestStatusDeleteView(TestCaseSetUpLoginedUserMixin, TestCase):
+class TestStatusDeleteView(TestCaseSetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status = Status.objects.create(name='Test status')
@@ -110,7 +110,7 @@ class TestStatusDeleteView(TestCaseSetUpLoginedUserMixin, TestCase):
     def test_status_delete_view_post_using_in_task(self):
         Task.objects.create(name='Test task',
                             status=self.test_status,
-                            creator=self.logined_user)
+                            creator=self.logged_user)
         response = self.client.post(self.url)
         self.assertRedirects(response, reverse('statuses_list'))
 

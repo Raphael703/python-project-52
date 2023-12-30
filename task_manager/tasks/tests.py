@@ -6,10 +6,10 @@ from django.test import TestCase
 from task_manager.labels.models import Label
 from task_manager.statuses.models import Status
 from task_manager.tasks.models import Task
-from task_manager.tests import TestCaseSetUpLoginedUserMixin
+from task_manager.tests import TestCaseSetUpLoggedUserMixin
 
 
-class TestTaskDetailView(TestCaseSetUpLoginedUserMixin, TestCase):
+class TestTaskDetailView(TestCaseSetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status = Status.objects.create(name='Test status')
@@ -18,7 +18,7 @@ class TestTaskDetailView(TestCaseSetUpLoginedUserMixin, TestCase):
         super().setUp()
         self.test_task = Task.objects.create(name='Test task',
                                              status=self.test_status,
-                                             creator=self.logined_user)
+                                             creator=self.logged_user)
         self.url = reverse('task_detail', kwargs={'pk': self.test_task.pk})
 
     def test_task_detail_view_get(self):
@@ -31,7 +31,7 @@ class TestTaskDetailView(TestCaseSetUpLoginedUserMixin, TestCase):
         self.assertRedirects(response, settings.LOGIN_URL)
 
 
-class TestTaskFilterView(TestCaseSetUpLoginedUserMixin, TestCase):
+class TestTaskFilterView(TestCaseSetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status = Status.objects.create(name='Test status')
@@ -66,9 +66,9 @@ class TestTaskFilterView(TestCaseSetUpLoginedUserMixin, TestCase):
         )
 
     def test_task_filter_view_get_by_executor(self):
-        self.other_user_task1.executor = self.logined_user
+        self.other_user_task1.executor = self.logged_user
 
-        filter_params_executor = {'status': self.logined_user.pk}
+        filter_params_executor = {'status': self.logged_user.pk}
         response = self.client.get(self.url, filter_params_executor)
         self.assertEqual(response.status_code, 200)
 
@@ -95,7 +95,7 @@ class TestTaskFilterView(TestCaseSetUpLoginedUserMixin, TestCase):
 
         own_task = Task.objects.create(name='Own task',
                                        status=self.test_status,
-                                       creator=self.logined_user)
+                                       creator=self.logged_user)
         response = self.client.get(self.url, filter_params_label)
         self.assertEqual(response.status_code, 200)
 
@@ -107,7 +107,7 @@ class TestTaskFilterView(TestCaseSetUpLoginedUserMixin, TestCase):
         self.assertRedirects(response, settings.LOGIN_URL)
 
 
-class TestTaskCreateView(TestCaseSetUpLoginedUserMixin, TestCase):
+class TestTaskCreateView(TestCaseSetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status = Status.objects.create(name='Test status')
@@ -117,7 +117,7 @@ class TestTaskCreateView(TestCaseSetUpLoginedUserMixin, TestCase):
         self.data_to_create_task = {
             'name': 'Test task to create',
             'status': self.test_status.pk,
-            'creator': self.logined_user.pk
+            'creator': self.logged_user.pk
         }
         self.url = reverse('task_create')
 
@@ -144,7 +144,7 @@ class TestTaskCreateView(TestCaseSetUpLoginedUserMixin, TestCase):
         self.assertFalse(Task.objects.filter(name=self.data_to_create_task).exists())
 
 
-class TestTaskUpdateView(TestCaseSetUpLoginedUserMixin, TestCase):
+class TestTaskUpdateView(TestCaseSetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status = Status.objects.create(name='Test status')
@@ -158,7 +158,7 @@ class TestTaskUpdateView(TestCaseSetUpLoginedUserMixin, TestCase):
         super().setUp()
         self.test_task = Task.objects.create(name='Test task',
                                              status=self.test_status,
-                                             creator=self.logined_user)
+                                             creator=self.logged_user)
         self.url = reverse('task_update', kwargs={'pk': self.test_task.pk})
 
     def test_task_update_view_get(self):
@@ -189,7 +189,7 @@ class TestTaskUpdateView(TestCaseSetUpLoginedUserMixin, TestCase):
                             self.data_to_update_task['name'])
 
 
-class TestTaskDeleteView(TestCaseSetUpLoginedUserMixin, TestCase):
+class TestTaskDeleteView(TestCaseSetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status = Status.objects.create(name='Test status')
@@ -204,7 +204,7 @@ class TestTaskDeleteView(TestCaseSetUpLoginedUserMixin, TestCase):
         super().setUp()
         self.test_task = Task.objects.create(name='Test task',
                                              status=self.test_status,
-                                             creator=self.logined_user)
+                                             creator=self.logged_user)
         self.url = reverse('task_delete', kwargs={'pk': self.test_task.pk})
 
     def test_task_delete_view_get(self):
