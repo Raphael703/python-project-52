@@ -1,25 +1,23 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
 from django.views.generic import ListView, DeleteView, CreateView, UpdateView
 
+from task_manager.mixins import CustomLoginRequiredMixin
 from task_manager.users.forms import CustomUserCreationForm
 
 
-class LoginRequiredAndUserPassesTestMixin(LoginRequiredMixin, UserPassesTestMixin):
+class LoginRequiredAndUserSelfCheckMixin(CustomLoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
-        return self.request.user.pk == self.kwargs['pk']
+        return self.request.user == self.get_object()
 
     def handle_no_permission(self):
         if not self.request.user.is_authenticated:
-            messages.error(
-                self.request,
-                _('You are not logged in! Please sign in.'))
-            return redirect('login')
+            return super().handle_no_permission()
         else:
             messages.error(
                 self.request,
@@ -40,7 +38,7 @@ class UserCreateView(SuccessMessageMixin, CreateView):
     success_message = _('The user has been successfully registered')
 
 
-class UserUpdateView(LoginRequiredAndUserPassesTestMixin, SuccessMessageMixin,
+class UserUpdateView(LoginRequiredAndUserSelfCheckMixin, SuccessMessageMixin,
                      UpdateView):
     model = get_user_model()
     form_class = CustomUserCreationForm
@@ -49,7 +47,7 @@ class UserUpdateView(LoginRequiredAndUserPassesTestMixin, SuccessMessageMixin,
     success_message = _('User successfully updated')
 
 
-class UserDeleteView(LoginRequiredAndUserPassesTestMixin, SuccessMessageMixin,
+class UserDeleteView(LoginRequiredAndUserSelfCheckMixin, SuccessMessageMixin,
                      DeleteView):
     model = get_user_model()
     template_name = 'users/delete.html'
