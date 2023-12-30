@@ -6,10 +6,10 @@ from django.test import TestCase
 
 from task_manager.statuses.models import Status
 from task_manager.tasks.models import Task
-from task_manager.tests import TestCaseSetUpLoggedUserMixin
+from task_manager.tests import SetUpLoggedUserMixin
 
 
-class TestStatusListView(TestCaseSetUpLoggedUserMixin, TestCase):
+class TestStatusListView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.url = reverse('statuses_list')
@@ -24,7 +24,7 @@ class TestStatusListView(TestCaseSetUpLoggedUserMixin, TestCase):
         self.assertRedirects(response, settings.LOGIN_URL)
 
 
-class TestStatusCreateView(TestCaseSetUpLoggedUserMixin, TestCase):
+class TestStatusCreateView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status_name = 'Test status name'
@@ -53,7 +53,7 @@ class TestStatusCreateView(TestCaseSetUpLoggedUserMixin, TestCase):
         self.assertFalse(Status.objects.filter(name=self.test_status_name).exists())
 
 
-class TestStatusUpdateView(TestCaseSetUpLoggedUserMixin, TestCase):
+class TestStatusUpdateView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status = Status.objects.create(name='Test status')
@@ -90,7 +90,7 @@ class TestStatusUpdateView(TestCaseSetUpLoggedUserMixin, TestCase):
         self.assertNotEqual(self.test_status.name, self.test_status_name_to_update)
 
 
-class TestStatusDeleteView(TestCaseSetUpLoggedUserMixin, TestCase):
+class TestStatusDeleteView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status = Status.objects.create(name='Test status')

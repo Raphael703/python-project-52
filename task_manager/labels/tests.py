@@ -6,10 +6,10 @@ from django.test import TestCase
 from task_manager.labels.models import Label
 from task_manager.statuses.models import Status
 from task_manager.tasks.models import Task
-from task_manager.tests import TestCaseSetUpLoggedUserMixin
+from task_manager.tests import SetUpLoggedUserMixin
 
 
-class TestLabelListView(TestCaseSetUpLoggedUserMixin, TestCase):
+class TestLabelListView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.url = reverse('labels_list')
@@ -24,7 +24,7 @@ class TestLabelListView(TestCaseSetUpLoggedUserMixin, TestCase):
         self.assertRedirects(response, settings.LOGIN_URL)
 
 
-class TestLabelCreateView(TestCaseSetUpLoggedUserMixin, TestCase):
+class TestLabelCreateView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_label_name = 'Test label name'
@@ -53,7 +53,7 @@ class TestLabelCreateView(TestCaseSetUpLoggedUserMixin, TestCase):
         self.assertFalse(Label.objects.filter(name=self.test_label_name).exists())
 
 
-class TestLabelUpdateView(TestCaseSetUpLoggedUserMixin, TestCase):
+class TestLabelUpdateView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_label = Label.objects.create(name='Test label')
@@ -90,7 +90,7 @@ class TestLabelUpdateView(TestCaseSetUpLoggedUserMixin, TestCase):
         self.assertNotEqual(self.test_label.name, self.test_label_name_to_update)
 
 
-class TestLabelDeleteView(TestCaseSetUpLoggedUserMixin, TestCase):
+class TestLabelDeleteView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_label = Label.objects.create(name='Test label')

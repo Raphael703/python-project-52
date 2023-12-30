@@ -6,10 +6,10 @@ from django.test import TestCase
 from task_manager.labels.models import Label
 from task_manager.statuses.models import Status
 from task_manager.tasks.models import Task
-from task_manager.tests import TestCaseSetUpLoggedUserMixin
+from task_manager.tests import SetUpLoggedUserMixin
 
 
-class TestTaskDetailView(TestCaseSetUpLoggedUserMixin, TestCase):
+class TestTaskDetailView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status = Status.objects.create(name='Test status')
@@ -31,7 +31,7 @@ class TestTaskDetailView(TestCaseSetUpLoggedUserMixin, TestCase):
         self.assertRedirects(response, settings.LOGIN_URL)
 
 
-class TestTaskFilterView(TestCaseSetUpLoggedUserMixin, TestCase):
+class TestTaskFilterView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status = Status.objects.create(name='Test status')
@@ -107,7 +107,7 @@ class TestTaskFilterView(TestCaseSetUpLoggedUserMixin, TestCase):
         self.assertRedirects(response, settings.LOGIN_URL)
 
 
-class TestTaskCreateView(TestCaseSetUpLoggedUserMixin, TestCase):
+class TestTaskCreateView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status = Status.objects.create(name='Test status')
@@ -144,7 +144,7 @@ class TestTaskCreateView(TestCaseSetUpLoggedUserMixin, TestCase):
         self.assertFalse(Task.objects.filter(name=self.data_to_create_task).exists())
 
 
-class TestTaskUpdateView(TestCaseSetUpLoggedUserMixin, TestCase):
+class TestTaskUpdateView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status = Status.objects.create(name='Test status')
@@ -189,7 +189,7 @@ class TestTaskUpdateView(TestCaseSetUpLoggedUserMixin, TestCase):
                             self.data_to_update_task['name'])
 
 
-class TestTaskDeleteView(TestCaseSetUpLoggedUserMixin, TestCase):
+class TestTaskDeleteView(SetUpLoggedUserMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test_status = Status.objects.create(name='Test status')
